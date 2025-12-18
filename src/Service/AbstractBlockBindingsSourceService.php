@@ -8,10 +8,16 @@ use WonderWp\Component\BlockBindingsSource\Response\BlockBindingsSourceRegistrat
 use WonderWp\Component\BlockBindingsSource\Response\BlockBindingsSourceRegistrationResponseInterface;
 use WonderWp\Component\CPT\Response\CustomPostTypeRegistrationResponseInterface;
 use WonderWp\Component\Service\AbstractService;
+use WonderWp\Component\Service\Traits\HasAutoloadingCapabilities;
+use WonderWp\Component\BlockBindingsSource\Traits\HasBlockBindingsSourceAutoloader;
 use WP_Block_Bindings_Source;
 
 abstract class AbstractBlockBindingsSourceService extends AbstractService implements BlockBindingsSourceServiceInterface
 {
+    use HasAutoloadingCapabilities, HasBlockBindingsSourceAutoloader {
+        HasBlockBindingsSourceAutoloader::resolveDiscoveryPaths insteadof HasAutoloadingCapabilities;
+        HasBlockBindingsSourceAutoloader::afterAutoload insteadof HasAutoloadingCapabilities;
+    }
     /** @var BlockBindingsSourceInterface[] */
     protected array $blockBindingsSources = [];
 

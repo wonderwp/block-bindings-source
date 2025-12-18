@@ -16,24 +16,6 @@ class BlockBindingsSourceService extends AbstractBlockBindingsSourceService
         }, 9);
     }
 
-    public function autoload(array $classNameFromFiles = [], array $discoveryPaths = [], callable $successCallback = null, array $excludedClasses = []): array
-    {
-        $discoveryPathsRoots = $this->manager->getConfig('discoveryPathsRoots', [
-            'block-bindings-source' => rtrim($this->manager->getConfig('path.root') ?? '', DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR
-        ]);
-        $discoverFolderSuffix = $this->manager->getConfig('blockBindingsSourceService.discoverFolderSuffix', 'BlockBindingsSources');
-        $defaultPaths = $this->deductDefaultDiscoveryPaths($discoveryPathsRoots, $discoverFolderSuffix);
-        $discoveryPaths = array_merge($defaultPaths, $discoveryPaths);
-
-        $autoLoaded = parent::autoload($classNameFromFiles, $discoveryPaths, $successCallback);
-
-        if (!empty($this->blockBindingsSources)) {
-            $this->registerBlockBindingsSources();
-        }
-
-        return $autoLoaded;
-    }
-
     protected function autoloadFile(string $className, string $filePath): object
     {
         $instance = parent::autoloadFile($className, $filePath);
